@@ -1,0 +1,15 @@
+{
+  "name": "ai-engineering-interview-questions",
+  "version": "0.1.0",
+  "private": true,
+  "description": "84 original AI engineering and FDE interview practice questions.",
+  "homepage": "https://savemytoken.com",
+  "type": "module",
+  "license": "CC-BY-4.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

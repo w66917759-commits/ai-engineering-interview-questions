@@ -1,0 +1,2581 @@
+{
+  "schemaVersion": 1,
+  "title": "AI Engineering Interview Questions",
+  "homepage": "https://savemytoken.com",
+  "language": "en",
+  "exportedOn": "2026-10-06",
+  "license": "CC-BY-4.0",
+  "reviewNote": "checkedAt records the editorial review date carried from the source content. The export date is not a new technical review. Verify current product APIs and behavior against the linked primary sources.",
+  "topics": {
+    "foundations": {
+      "rag": "RAG & retrieval",
+      "prompt": "Prompt & context",
+      "agent": "Agent engineering",
+      "vector": "Vector search"
+    },
+    "scenarios": {
+      "customer": "Customer & delivery",
+      "rag": "RAG & retrieval",
+      "agent": "Agents & tools",
+      "context": "Context & cost",
+      "evaluation": "Evaluation & quality",
+      "production": "Production & reliability"
+    }
+  },
+  "foundations": [
+    {
+      "id": "foundation-tools-1",
+      "topic": "agent",
+      "level": "Intermediate",
+      "prompt": "Who executes a function call proposed by a model?",
+      "answer": "For a client-side tool, the application receives the proposal, validates and authorizes it, executes the operation, and returns the result to the model or controller.",
+      "pitfall": "Generated arguments are a proposal, not proof of permission.",
+      "lesson": {
+        "slug": "agent-tool-validation",
+        "title": "Validate a tool call before it runs",
+        "href": "https://savemytoken.com/learn/agent-tool-validation"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        },
+        {
+          "title": "JSON Schema: object validation",
+          "href": "https://json-schema.org/understanding-json-schema/reference/object"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-tools-2",
+      "topic": "agent",
+      "level": "Intermediate",
+      "prompt": "What belongs in a tool schema?",
+      "answer": "Give the tool a specific purpose, clear argument names, types, required fields, and constraints. Define how failure is returned so the caller can react appropriately.",
+      "pitfall": "A broad tool named do_anything makes both selection and permission checks harder.",
+      "lesson": {
+        "slug": "agent-tool-validation",
+        "title": "Validate a tool call before it runs",
+        "href": "https://savemytoken.com/learn/agent-tool-validation"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        },
+        {
+          "title": "JSON Schema: object validation",
+          "href": "https://json-schema.org/understanding-json-schema/reference/object"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-tools-3",
+      "topic": "agent",
+      "level": "Intermediate",
+      "prompt": "Where should argument validation happen?",
+      "answer": "At the execution boundary before side effects, even if upstream generation used a schema. Validate allowed values and resource scope, not just JSON syntax.",
+      "pitfall": "A valid ID can still belong to a different user.",
+      "lesson": {
+        "slug": "agent-tool-validation",
+        "title": "Validate a tool call before it runs",
+        "href": "https://savemytoken.com/learn/agent-tool-validation"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        },
+        {
+          "title": "JSON Schema: object validation",
+          "href": "https://json-schema.org/understanding-json-schema/reference/object"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-tools-4",
+      "topic": "agent",
+      "level": "Intermediate",
+      "prompt": "When can a failed call be retried?",
+      "answer": "Only when the failure is plausibly temporary and the operation is safe to repeat or protected against duplicate effects. Apply attempt and time limits.",
+      "pitfall": "A timeout does not prove that a remote write never happened.",
+      "lesson": {
+        "slug": "agent-tool-validation",
+        "title": "Validate a tool call before it runs",
+        "href": "https://savemytoken.com/learn/agent-tool-validation"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        },
+        {
+          "title": "JSON Schema: object validation",
+          "href": "https://json-schema.org/understanding-json-schema/reference/object"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-tools-5",
+      "topic": "agent",
+      "level": "Intermediate",
+      "prompt": "What should a tool result contain?",
+      "answer": "Return the data required for the next decision, an explicit status, and useful bounded error information. Preserve evidence references when the result supports a factual claim.",
+      "pitfall": "Dumping entire logs or credentials into the model context is unnecessary.",
+      "lesson": {
+        "slug": "agent-tool-validation",
+        "title": "Validate a tool call before it runs",
+        "href": "https://savemytoken.com/learn/agent-tool-validation"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        },
+        {
+          "title": "JSON Schema: object validation",
+          "href": "https://json-schema.org/understanding-json-schema/reference/object"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-loops-1",
+      "topic": "agent",
+      "level": "Beginner",
+      "prompt": "What connects actions in an agent loop?",
+      "answer": "The next decision should use the observed result of the previous action and the remaining task state. The controller should not treat a proposed action as already completed.",
+      "pitfall": "Planning text alone does not establish execution success.",
+      "lesson": {
+        "slug": "agent-stop-conditions",
+        "title": "Stop a failing agent loop",
+        "href": "https://savemytoken.com/learn/agent-stop-conditions"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-loops-2",
+      "topic": "agent",
+      "level": "Beginner",
+      "prompt": "Which stop conditions should be explicit?",
+      "answer": "Task acceptance, permanent failure, attempt exhaustion, elapsed-time limits, spending limits, and cancellation. Choose the appropriate conditions for the operation being performed.",
+      "pitfall": "One universal iteration count cannot protect against every failure.",
+      "lesson": {
+        "slug": "agent-stop-conditions",
+        "title": "Stop a failing agent loop",
+        "href": "https://savemytoken.com/learn/agent-stop-conditions"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-loops-3",
+      "topic": "agent",
+      "level": "Beginner",
+      "prompt": "How do you handle a temporary service failure?",
+      "answer": "Classify it, check whether repetition is safe, and retry within bounded attempts and time. Respect service retry guidance and avoid synchronized retry bursts.",
+      "pitfall": "A validation error generally needs corrected input rather than the same retry.",
+      "lesson": {
+        "slug": "agent-stop-conditions",
+        "title": "Stop a failing agent loop",
+        "href": "https://savemytoken.com/learn/agent-stop-conditions"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-loops-4",
+      "topic": "agent",
+      "level": "Beginner",
+      "prompt": "How should a workflow report partial completion?",
+      "answer": "Record completed actions, evidence, unresolved work, and the reason for stopping. Make any external effects visible so the next attempt can resume safely.",
+      "pitfall": "Calling the whole task failed can hide actions that already succeeded.",
+      "lesson": {
+        "slug": "agent-stop-conditions",
+        "title": "Stop a failing agent loop",
+        "href": "https://savemytoken.com/learn/agent-stop-conditions"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-loops-5",
+      "topic": "agent",
+      "level": "Beginner",
+      "prompt": "How do you reduce repeated unsuccessful tool use?",
+      "answer": "Track attempted actions and their outcomes, detect unproductive repetition, and require new information or escalation before repeating the same failed approach.",
+      "pitfall": "Changing the wording of the same action is not necessarily progress.",
+      "lesson": {
+        "slug": "agent-stop-conditions",
+        "title": "Stop a failing agent loop",
+        "href": "https://savemytoken.com/learn/agent-stop-conditions"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-memory-1",
+      "topic": "agent",
+      "level": "Beginner",
+      "prompt": "How does stored memory differ from conversation history?",
+      "answer": "History records a sequence of messages. Memory selects information intended to remain useful and retrieves it under explicit scope and update rules.",
+      "pitfall": "Saving every message indefinitely does not make memory reliable.",
+      "lesson": {
+        "slug": "agent-memory",
+        "title": "Recall the right memory for the right user",
+        "href": "https://savemytoken.com/learn/agent-memory"
+      },
+      "sources": [
+        {
+          "title": "LangChain: short-term memory",
+          "href": "https://docs.langchain.com/oss/python/langchain/short-term-memory"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-memory-2",
+      "topic": "agent",
+      "level": "Beginner",
+      "prompt": "What makes a memory record maintainable?",
+      "answer": "Keep its scope, origin, update or version information, and any expiration or deletion rule. Store enough provenance to resolve conflicts or correct a mistaken value.",
+      "pitfall": "A bare sentence loses who it applies to and whether it is still current.",
+      "lesson": {
+        "slug": "agent-memory",
+        "title": "Recall the right memory for the right user",
+        "href": "https://savemytoken.com/learn/agent-memory"
+      },
+      "sources": [
+        {
+          "title": "LangChain: short-term memory",
+          "href": "https://docs.langchain.com/oss/python/langchain/short-term-memory"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-memory-3",
+      "topic": "agent",
+      "level": "Beginner",
+      "prompt": "How should conflicting preferences be resolved?",
+      "answer": "Use a documented precedence rule that respects scope and explicit corrections. If the intended value remains uncertain, ask rather than silently combining incompatible preferences.",
+      "pitfall": "The most recently retrieved record is not always the authoritative one.",
+      "lesson": {
+        "slug": "agent-memory",
+        "title": "Recall the right memory for the right user",
+        "href": "https://savemytoken.com/learn/agent-memory"
+      },
+      "sources": [
+        {
+          "title": "LangChain: short-term memory",
+          "href": "https://docs.langchain.com/oss/python/langchain/short-term-memory"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-memory-4",
+      "topic": "agent",
+      "level": "Beginner",
+      "prompt": "Where should user isolation be enforced?",
+      "answer": "At the storage and retrieval boundary using authenticated identity and resource authorization. Test that unrelated records cannot enter the returned context.",
+      "pitfall": "Asking the model to ignore another user's data is too late once that data was retrieved.",
+      "lesson": {
+        "slug": "agent-memory",
+        "title": "Recall the right memory for the right user",
+        "href": "https://savemytoken.com/learn/agent-memory"
+      },
+      "sources": [
+        {
+          "title": "LangChain: short-term memory",
+          "href": "https://docs.langchain.com/oss/python/langchain/short-term-memory"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-memory-5",
+      "topic": "agent",
+      "level": "Beginner",
+      "prompt": "How do you evaluate a memory system?",
+      "answer": "Test retention of relevant facts, successful corrections, expiration, deletion, and cross-user isolation. Also check whether retrieved memories help the current task.",
+      "pitfall": "A higher recall rate can be harmful if it brings back stale or irrelevant data.",
+      "lesson": {
+        "slug": "agent-memory",
+        "title": "Recall the right memory for the right user",
+        "href": "https://savemytoken.com/learn/agent-memory"
+      },
+      "sources": [
+        {
+          "title": "LangChain: short-term memory",
+          "href": "https://docs.langchain.com/oss/python/langchain/short-term-memory"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-cosine-1",
+      "topic": "vector",
+      "level": "Beginner",
+      "prompt": "How is cosine similarity calculated?",
+      "answer": "Take the dot product of two nonzero vectors and divide by the product of their lengths. Validate matching dimensions and finite coordinates first.",
+      "pitfall": "The formula is undefined when either vector has zero length.",
+      "lesson": {
+        "slug": "vector-similarity",
+        "title": "Calculate cosine similarity by hand",
+        "href": "https://savemytoken.com/learn/vector-similarity"
+      },
+      "sources": [
+        {
+          "title": "Sentence Transformers: semantic textual similarity",
+          "href": "https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-cosine-2",
+      "topic": "vector",
+      "level": "Beginner",
+      "prompt": "When do dot product and cosine give the same ordering?",
+      "answer": "For vectors normalized to unit length, their dot products equal their cosine similarities. Otherwise vector magnitude can change dot-product ranking.",
+      "pitfall": "Do not normalize blindly if the embedding model expects a different scoring method.",
+      "lesson": {
+        "slug": "vector-similarity",
+        "title": "Calculate cosine similarity by hand",
+        "href": "https://savemytoken.com/learn/vector-similarity"
+      },
+      "sources": [
+        {
+          "title": "Sentence Transformers: semantic textual similarity",
+          "href": "https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-cosine-3",
+      "topic": "vector",
+      "level": "Beginner",
+      "prompt": "Is a similarity score a probability of correctness?",
+      "answer": "No. It is a score under a particular representation and metric. Calibrate retrieval decisions with labeled tasks and verify answer claims separately.",
+      "pitfall": "A high semantic match can retrieve an outdated or factually wrong passage.",
+      "lesson": {
+        "slug": "vector-similarity",
+        "title": "Calculate cosine similarity by hand",
+        "href": "https://savemytoken.com/learn/vector-similarity"
+      },
+      "sources": [
+        {
+          "title": "Sentence Transformers: semantic textual similarity",
+          "href": "https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-cosine-4",
+      "topic": "vector",
+      "level": "Beginner",
+      "prompt": "Can embeddings from different models be mixed?",
+      "answer": "Usually they must be regenerated or kept in separate compatible indexes. Equal vector lengths alone do not align the underlying spaces.",
+      "pitfall": "Changing only the query model can silently damage retrieval.",
+      "lesson": {
+        "slug": "vector-similarity",
+        "title": "Calculate cosine similarity by hand",
+        "href": "https://savemytoken.com/learn/vector-similarity"
+      },
+      "sources": [
+        {
+          "title": "Sentence Transformers: semantic textual similarity",
+          "href": "https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-cosine-5",
+      "topic": "vector",
+      "level": "Beginner",
+      "prompt": "How should you choose an embedding model?",
+      "answer": "Evaluate representative language, document types, queries, and relevance labels. Compare retrieval quality with latency, storage, and total processing cost.",
+      "pitfall": "A larger dimension alone does not prove better results for your workload.",
+      "lesson": {
+        "slug": "vector-similarity",
+        "title": "Calculate cosine similarity by hand",
+        "href": "https://savemytoken.com/learn/vector-similarity"
+      },
+      "sources": [
+        {
+          "title": "Sentence Transformers: semantic textual similarity",
+          "href": "https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-filtering-1",
+      "topic": "vector",
+      "level": "Intermediate",
+      "prompt": "Why keep metadata alongside vectors?",
+      "answer": "Metadata identifies the source, version, tenant or access scope, and other eligibility conditions. The vector alone cannot reliably encode those rules.",
+      "pitfall": "Semantic similarity is not a permission check.",
+      "lesson": {
+        "slug": "vector-filtering",
+        "title": "Filter the corpus before choosing Top K",
+        "href": "https://savemytoken.com/learn/vector-filtering"
+      },
+      "sources": [
+        {
+          "title": "Qdrant: filtering",
+          "href": "https://qdrant.tech/documentation/search/filtering/"
+        },
+        {
+          "title": "Sentence Transformers: semantic textual similarity",
+          "href": "https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-filtering-2",
+      "topic": "vector",
+      "level": "Intermediate",
+      "prompt": "Why can filtering after Top K miss valid evidence?",
+      "answer": "The global shortlist may contain only ineligible records. Filtering that truncated list cannot recover eligible records excluded before filtering.",
+      "pitfall": "An empty shortlist does not prove the eligible corpus contains no answer.",
+      "lesson": {
+        "slug": "vector-filtering",
+        "title": "Filter the corpus before choosing Top K",
+        "href": "https://savemytoken.com/learn/vector-filtering"
+      },
+      "sources": [
+        {
+          "title": "Qdrant: filtering",
+          "href": "https://qdrant.tech/documentation/search/filtering/"
+        },
+        {
+          "title": "Sentence Transformers: semantic textual similarity",
+          "href": "https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-filtering-3",
+      "topic": "vector",
+      "level": "Intermediate",
+      "prompt": "How does exact search differ from approximate search?",
+      "answer": "Exact search considers the full eligible set under the defined metric. Approximate search trades some retrieval accuracy for efficiency through an index or candidate-selection method.",
+      "pitfall": "This three-record sorting example is not evidence of approximate-index performance.",
+      "lesson": {
+        "slug": "vector-filtering",
+        "title": "Filter the corpus before choosing Top K",
+        "href": "https://savemytoken.com/learn/vector-filtering"
+      },
+      "sources": [
+        {
+          "title": "Qdrant: filtering",
+          "href": "https://qdrant.tech/documentation/search/filtering/"
+        },
+        {
+          "title": "Sentence Transformers: semantic textual similarity",
+          "href": "https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-filtering-4",
+      "topic": "vector",
+      "level": "Intermediate",
+      "prompt": "How should updated documents be handled?",
+      "answer": "Associate chunks with a document version, publish a consistent updated set, and remove or exclude superseded chunks. Test retrieval immediately after the change.",
+      "pitfall": "Adding new vectors while keeping old conflicting passages active can mix policy versions.",
+      "lesson": {
+        "slug": "vector-filtering",
+        "title": "Filter the corpus before choosing Top K",
+        "href": "https://savemytoken.com/learn/vector-filtering"
+      },
+      "sources": [
+        {
+          "title": "Qdrant: filtering",
+          "href": "https://qdrant.tech/documentation/search/filtering/"
+        },
+        {
+          "title": "Sentence Transformers: semantic textual similarity",
+          "href": "https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-filtering-5",
+      "topic": "vector",
+      "level": "Intermediate",
+      "prompt": "What should you measure when selecting an index?",
+      "answer": "Measure recall against an exact baseline together with latency, memory, build time, updates, and filtering behavior on representative data.",
+      "pitfall": "A latency number without corpus size and recall conditions is hard to interpret.",
+      "lesson": {
+        "slug": "vector-filtering",
+        "title": "Filter the corpus before choosing Top K",
+        "href": "https://savemytoken.com/learn/vector-filtering"
+      },
+      "sources": [
+        {
+          "title": "Qdrant: filtering",
+          "href": "https://qdrant.tech/documentation/search/filtering/"
+        },
+        {
+          "title": "Sentence Transformers: semantic textual similarity",
+          "href": "https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-instructions-1",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "What should a useful task instruction include?",
+      "answer": "Specify the task, relevant context, output requirements, and what to do when information is missing. Include an example when it resolves an ambiguity that words alone leave open.",
+      "pitfall": "Extra instruction length is not itself evidence of better results.",
+      "lesson": {
+        "slug": "prompt-instructions",
+        "title": "Separate the task from source text",
+        "href": "https://savemytoken.com/learn/prompt-instructions"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: prompting best practices",
+          "href": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+        },
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-instructions-2",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "Why separate instructions and reference material?",
+      "answer": "The reader or model can more easily distinguish the requested operation from text to analyze. Named fields or consistent delimiters make that intent explicit.",
+      "pitfall": "A delimiter does not make malicious source content trustworthy.",
+      "lesson": {
+        "slug": "prompt-instructions",
+        "title": "Separate the task from source text",
+        "href": "https://savemytoken.com/learn/prompt-instructions"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: prompting best practices",
+          "href": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+        },
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-instructions-3",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "Is prompt injection solved by a stronger system prompt?",
+      "answer": "No. Use limited tool permissions, validation, separation of trust levels, and checks appropriate to each action, then test failures. Prompt wording is one layer.",
+      "pitfall": "Treating model compliance as the only security boundary leaves actions exposed.",
+      "lesson": {
+        "slug": "prompt-instructions",
+        "title": "Separate the task from source text",
+        "href": "https://savemytoken.com/learn/prompt-instructions"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: prompting best practices",
+          "href": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+        },
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-instructions-4",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "When should you use few-shot examples?",
+      "answer": "Use them to demonstrate a tricky format or decision boundary. Include relevant edge cases and compare results with a simpler baseline.",
+      "pitfall": "Examples with irrelevant details can teach accidental patterns.",
+      "lesson": {
+        "slug": "prompt-instructions",
+        "title": "Separate the task from source text",
+        "href": "https://savemytoken.com/learn/prompt-instructions"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: prompting best practices",
+          "href": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+        },
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-instructions-5",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "How do you evaluate a prompt revision?",
+      "answer": "Hold the model settings and evaluation cases fixed. Compare correctness, formatting, refusal or abstention behavior, and cost with a predefined acceptance rule.",
+      "pitfall": "Selecting only successful outputs can hide regressions.",
+      "lesson": {
+        "slug": "prompt-instructions",
+        "title": "Separate the task from source text",
+        "href": "https://savemytoken.com/learn/prompt-instructions"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: prompting best practices",
+          "href": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+        },
+        {
+          "title": "Anthropic: tool use",
+          "href": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-budget-1",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "What belongs in a context budget?",
+      "answer": "Include fixed instructions, tool definitions, messages, retrieved evidence, and space for output. Verify model-specific handling of other inputs and reasoning with the provider.",
+      "pitfall": "Counting only the most recent user message understates the request.",
+      "lesson": {
+        "slug": "prompt-context-budget",
+        "title": "Make a context budget before sending",
+        "href": "https://savemytoken.com/learn/prompt-context-budget"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: context windows",
+          "href": "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+        },
+        {
+          "title": "LangChain: short-term memory",
+          "href": "https://docs.langchain.com/oss/python/langchain/short-term-memory"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-budget-2",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "When is summarization useful?",
+      "answer": "When older material contains useful decisions but too much detail to resend. Preserve constraints, unresolved issues, and retrievable source references, then check the summary for omissions.",
+      "pitfall": "Summarization has a cost and can remove information needed later.",
+      "lesson": {
+        "slug": "prompt-context-budget",
+        "title": "Make a context budget before sending",
+        "href": "https://savemytoken.com/learn/prompt-context-budget"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: context windows",
+          "href": "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+        },
+        {
+          "title": "LangChain: short-term memory",
+          "href": "https://docs.langchain.com/oss/python/langchain/short-term-memory"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-budget-3",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "What should remain exact during compression?",
+      "answer": "Keep identifiers, user constraints, critical numbers, code that must run, and evidence whose wording matters. Compress surrounding explanation instead.",
+      "pitfall": "An approximate paraphrase can change a permission or a requirement.",
+      "lesson": {
+        "slug": "prompt-context-budget",
+        "title": "Make a context budget before sending",
+        "href": "https://savemytoken.com/learn/prompt-context-budget"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: context windows",
+          "href": "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+        },
+        {
+          "title": "LangChain: short-term memory",
+          "href": "https://docs.langchain.com/oss/python/langchain/short-term-memory"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-budget-4",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "How is prompt caching different from history trimming?",
+      "answer": "Caching may reuse processing of eligible repeated input; trimming changes which input is sent. Their billing and quality effects differ and must be measured separately.",
+      "pitfall": "A cached request can still include a large context and paid output.",
+      "lesson": {
+        "slug": "prompt-context-budget",
+        "title": "Make a context budget before sending",
+        "href": "https://savemytoken.com/learn/prompt-context-budget"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: context windows",
+          "href": "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+        },
+        {
+          "title": "LangChain: short-term memory",
+          "href": "https://docs.langchain.com/oss/python/langchain/short-term-memory"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-budget-5",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "What if the necessary evidence does not fit?",
+      "answer": "Narrow the task, retrieve a better subset, process it in stages, or choose a suitable model after checking its limits. Make missing evidence explicit.",
+      "pitfall": "Silently dropping the exception to a rule may produce a confident wrong answer.",
+      "lesson": {
+        "slug": "prompt-context-budget",
+        "title": "Make a context budget before sending",
+        "href": "https://savemytoken.com/learn/prompt-context-budget"
+      },
+      "sources": [
+        {
+          "title": "Anthropic: context windows",
+          "href": "https://platform.claude.com/docs/en/build-with-claude/context-windows"
+        },
+        {
+          "title": "LangChain: short-term memory",
+          "href": "https://docs.langchain.com/oss/python/langchain/short-term-memory"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-structured-1",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "Is valid JSON sufficient for an application?",
+      "answer": "No. Check the expected shape, required fields, types, values, and business rules after parsing. Apply separate authorization to any requested action.",
+      "pitfall": "A JSON object may be syntactically valid and completely unsuitable for the task.",
+      "lesson": {
+        "slug": "prompt-structured-output",
+        "title": "Validate JSON before using it",
+        "href": "https://savemytoken.com/learn/prompt-structured-output"
+      },
+      "sources": [
+        {
+          "title": "JSON Schema: object validation",
+          "href": "https://json-schema.org/understanding-json-schema/reference/object"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-structured-2",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "What should happen to unexpected fields?",
+      "answer": "Choose an explicit policy. This lab rejects them so a hidden execute field cannot silently become part of downstream behavior.",
+      "pitfall": "Ignoring unknown fields in one layer while acting on them in another creates inconsistent rules.",
+      "lesson": {
+        "slug": "prompt-structured-output",
+        "title": "Validate JSON before using it",
+        "href": "https://savemytoken.com/learn/prompt-structured-output"
+      },
+      "sources": [
+        {
+          "title": "JSON Schema: object validation",
+          "href": "https://json-schema.org/understanding-json-schema/reference/object"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-structured-3",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "How should missing information be represented?",
+      "answer": "Define an explicit unknown state, such as a status plus nullable value, and validate the relationship between fields. Do not replace unknown numbers with zero.",
+      "pitfall": "An empty string can hide the difference between missing and deliberately blank data.",
+      "lesson": {
+        "slug": "prompt-structured-output",
+        "title": "Validate JSON before using it",
+        "href": "https://savemytoken.com/learn/prompt-structured-output"
+      },
+      "sources": [
+        {
+          "title": "JSON Schema: object validation",
+          "href": "https://json-schema.org/understanding-json-schema/reference/object"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-structured-4",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "Does structured output guarantee factual accuracy?",
+      "answer": "No. It constrains representation. Compare the content with evidence, application invariants, or task-specific tests before treating it as correct.",
+      "pitfall": "A schema-valid 90-day return window can still contradict a 30-day policy.",
+      "lesson": {
+        "slug": "prompt-structured-output",
+        "title": "Validate JSON before using it",
+        "href": "https://savemytoken.com/learn/prompt-structured-output"
+      },
+      "sources": [
+        {
+          "title": "JSON Schema: object validation",
+          "href": "https://json-schema.org/understanding-json-schema/reference/object"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-structured-5",
+      "topic": "prompt",
+      "level": "Beginner",
+      "prompt": "How should an application handle validation failure?",
+      "answer": "Return a clear failure or try a bounded repair with the validation feedback. Preserve the failed payload for appropriate diagnostics and stop when the retry budget ends.",
+      "pitfall": "Unlimited repair attempts can multiply cost without improving correctness.",
+      "lesson": {
+        "slug": "prompt-structured-output",
+        "title": "Validate JSON before using it",
+        "href": "https://savemytoken.com/learn/prompt-structured-output"
+      },
+      "sources": [
+        {
+          "title": "JSON Schema: object validation",
+          "href": "https://json-schema.org/understanding-json-schema/reference/object"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-chunking-1",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "How should you choose chunk size?",
+      "answer": "Start with the smallest passage that keeps a representative answer complete. Test those passages against a question set and the model input limit, then compare retrieval and answer quality.",
+      "pitfall": "A character limit is not a token limit, and one size does not suit every document.",
+      "lesson": {
+        "slug": "rag-chunking",
+        "title": "Keep a rule and its exception together",
+        "href": "https://savemytoken.com/learn/rag-chunking"
+      },
+      "sources": [
+        {
+          "title": "LangChain: recursive text splitting",
+          "href": "https://docs.langchain.com/oss/python/integrations/splitters/recursive_text_splitter"
+        },
+        {
+          "title": "LangChain: retrieval and RAG",
+          "href": "https://docs.langchain.com/oss/python/deepagents/retrieval"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-chunking-2",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "What does chunk overlap solve?",
+      "answer": "Overlap repeats boundary text so a fact split between adjacent chunks may remain available. Measure whether this improves evidence coverage enough to justify the added storage and context.",
+      "pitfall": "Overlap does not guarantee that a distant exception travels with its rule.",
+      "lesson": {
+        "slug": "rag-chunking",
+        "title": "Keep a rule and its exception together",
+        "href": "https://savemytoken.com/learn/rag-chunking"
+      },
+      "sources": [
+        {
+          "title": "LangChain: recursive text splitting",
+          "href": "https://docs.langchain.com/oss/python/integrations/splitters/recursive_text_splitter"
+        },
+        {
+          "title": "LangChain: retrieval and RAG",
+          "href": "https://docs.langchain.com/oss/python/deepagents/retrieval"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-chunking-3",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "When is parent-child retrieval useful?",
+      "answer": "Search small child passages for a precise match, then attach a bounded parent section for context. Keep the child location so the reader can verify the specific evidence.",
+      "pitfall": "Returning an entire manual as the parent can erase the context savings.",
+      "lesson": {
+        "slug": "rag-chunking",
+        "title": "Keep a rule and its exception together",
+        "href": "https://savemytoken.com/learn/rag-chunking"
+      },
+      "sources": [
+        {
+          "title": "LangChain: recursive text splitting",
+          "href": "https://docs.langchain.com/oss/python/integrations/splitters/recursive_text_splitter"
+        },
+        {
+          "title": "LangChain: retrieval and RAG",
+          "href": "https://docs.langchain.com/oss/python/deepagents/retrieval"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-chunking-4",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "Which metadata should a chunk keep?",
+      "answer": "Keep document ID, version, section or page, and the access scope required by the application. These fields support updates, filtering, and traceable citations.",
+      "pitfall": "A sequential chunk number alone may change after the source is edited.",
+      "lesson": {
+        "slug": "rag-chunking",
+        "title": "Keep a rule and its exception together",
+        "href": "https://savemytoken.com/learn/rag-chunking"
+      },
+      "sources": [
+        {
+          "title": "LangChain: recursive text splitting",
+          "href": "https://docs.langchain.com/oss/python/integrations/splitters/recursive_text_splitter"
+        },
+        {
+          "title": "LangChain: retrieval and RAG",
+          "href": "https://docs.langchain.com/oss/python/deepagents/retrieval"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-chunking-5",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "How do you test a splitter?",
+      "answer": "Use questions requiring a single fact, a rule with an exception, and information across a boundary. Inspect the actual chunks before measuring retrieval and final answers.",
+      "pitfall": "A readable chunk is not proof that a retriever will select it.",
+      "lesson": {
+        "slug": "rag-chunking",
+        "title": "Keep a rule and its exception together",
+        "href": "https://savemytoken.com/learn/rag-chunking"
+      },
+      "sources": [
+        {
+          "title": "LangChain: recursive text splitting",
+          "href": "https://docs.langchain.com/oss/python/integrations/splitters/recursive_text_splitter"
+        },
+        {
+          "title": "LangChain: retrieval and RAG",
+          "href": "https://docs.langchain.com/oss/python/deepagents/retrieval"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-fusion-1",
+      "topic": "rag",
+      "level": "Intermediate",
+      "prompt": "Why combine keyword and semantic retrieval?",
+      "answer": "They can find complementary evidence: exact identifiers matter for keyword matches, while meaning-based retrieval can help with paraphrases. Evaluate their combination against your own questions.",
+      "pitfall": "Hybrid retrieval is not automatically better on every query.",
+      "lesson": {
+        "slug": "rag-rank-fusion",
+        "title": "Combine two retrieval rankings",
+        "href": "https://savemytoken.com/learn/rag-rank-fusion"
+      },
+      "sources": [
+        {
+          "title": "Elasticsearch: reciprocal rank fusion",
+          "href": "https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-fusion-2",
+      "topic": "rag",
+      "level": "Intermediate",
+      "prompt": "Why not add their raw scores?",
+      "answer": "The scales and distributions may differ, allowing one retriever to dominate. Use a calibrated combination or a rank-based method with explicit assumptions.",
+      "pitfall": "A score of 0.8 from one system is not necessarily comparable to 0.8 from another.",
+      "lesson": {
+        "slug": "rag-rank-fusion",
+        "title": "Combine two retrieval rankings",
+        "href": "https://savemytoken.com/learn/rag-rank-fusion"
+      },
+      "sources": [
+        {
+          "title": "Elasticsearch: reciprocal rank fusion",
+          "href": "https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-fusion-3",
+      "topic": "rag",
+      "level": "Intermediate",
+      "prompt": "What does the RRF constant do?",
+      "answer": "It controls how much the highest positions dominate each contribution. A smaller constant makes early rank differences more influential.",
+      "pitfall": "It is not the number of retrieved documents or a similarity threshold.",
+      "lesson": {
+        "slug": "rag-rank-fusion",
+        "title": "Combine two retrieval rankings",
+        "href": "https://savemytoken.com/learn/rag-rank-fusion"
+      },
+      "sources": [
+        {
+          "title": "Elasticsearch: reciprocal rank fusion",
+          "href": "https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-fusion-4",
+      "topic": "rag",
+      "level": "Intermediate",
+      "prompt": "How is reranking different from fusion?",
+      "answer": "Fusion merges candidate orderings. A reranker evaluates candidate relevance to the query with another scoring procedure. You may fuse first and rerank the resulting shortlist.",
+      "pitfall": "A reranker cannot recover evidence absent from its candidate set.",
+      "lesson": {
+        "slug": "rag-rank-fusion",
+        "title": "Combine two retrieval rankings",
+        "href": "https://savemytoken.com/learn/rag-rank-fusion"
+      },
+      "sources": [
+        {
+          "title": "Elasticsearch: reciprocal rank fusion",
+          "href": "https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-fusion-5",
+      "topic": "rag",
+      "level": "Intermediate",
+      "prompt": "How do you avoid duplicate evidence?",
+      "answer": "Use stable document or passage IDs, deduplicate within each result list, then merge cross-list contributions. Also inspect near-duplicate passages before constructing the final context.",
+      "pitfall": "Deduplicating unrelated passages only because their titles match can remove evidence.",
+      "lesson": {
+        "slug": "rag-rank-fusion",
+        "title": "Combine two retrieval rankings",
+        "href": "https://savemytoken.com/learn/rag-rank-fusion"
+      },
+      "sources": [
+        {
+          "title": "Elasticsearch: reciprocal rank fusion",
+          "href": "https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-evidence-1",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "Does a citation prevent hallucination?",
+      "answer": "No. It can point to a real passage that does not support the answer. Verify the source, the claim, and any important conditions separately.",
+      "pitfall": "Citation presence is only a structural check.",
+      "lesson": {
+        "slug": "rag-evidence",
+        "title": "Check the evidence behind an answer",
+        "href": "https://savemytoken.com/learn/rag-evidence"
+      },
+      "sources": [
+        {
+          "title": "Hugging Face: evaluating RAG",
+          "href": "https://huggingface.co/learn/cookbook/en/rag_evaluation"
+        },
+        {
+          "title": "LangChain: retrieval and RAG",
+          "href": "https://docs.langchain.com/oss/python/deepagents/retrieval"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-evidence-2",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "When should a RAG assistant abstain?",
+      "answer": "When accessible evidence is missing, contradictory, or insufficient for the requested claim. Explain what is missing and offer a relevant next step when one is available.",
+      "pitfall": "Low similarity alone is not a universally calibrated abstention rule.",
+      "lesson": {
+        "slug": "rag-evidence",
+        "title": "Check the evidence behind an answer",
+        "href": "https://savemytoken.com/learn/rag-evidence"
+      },
+      "sources": [
+        {
+          "title": "Hugging Face: evaluating RAG",
+          "href": "https://huggingface.co/learn/cookbook/en/rag_evaluation"
+        },
+        {
+          "title": "LangChain: retrieval and RAG",
+          "href": "https://docs.langchain.com/oss/python/deepagents/retrieval"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-evidence-3",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "How should citations be linked?",
+      "answer": "Keep source IDs and locations with the retrieved passages. Resolve approved IDs into actual links or document locations rather than accepting invented URLs from generated text.",
+      "pitfall": "An old source version may no longer justify the current answer.",
+      "lesson": {
+        "slug": "rag-evidence",
+        "title": "Check the evidence behind an answer",
+        "href": "https://savemytoken.com/learn/rag-evidence"
+      },
+      "sources": [
+        {
+          "title": "Hugging Face: evaluating RAG",
+          "href": "https://huggingface.co/learn/cookbook/en/rag_evaluation"
+        },
+        {
+          "title": "LangChain: retrieval and RAG",
+          "href": "https://docs.langchain.com/oss/python/deepagents/retrieval"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-evidence-4",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "What if two sources disagree?",
+      "answer": "Expose the disagreement, compare scope and effective dates, and apply a documented precedence rule where one exists. Avoid silently combining incompatible statements.",
+      "pitfall": "A newer upload timestamp is not always a newer policy date.",
+      "lesson": {
+        "slug": "rag-evidence",
+        "title": "Check the evidence behind an answer",
+        "href": "https://savemytoken.com/learn/rag-evidence"
+      },
+      "sources": [
+        {
+          "title": "Hugging Face: evaluating RAG",
+          "href": "https://huggingface.co/learn/cookbook/en/rag_evaluation"
+        },
+        {
+          "title": "LangChain: retrieval and RAG",
+          "href": "https://docs.langchain.com/oss/python/deepagents/retrieval"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-evidence-5",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "How can you evaluate groundedness?",
+      "answer": "Break the answer into checkable claims and compare each with the available evidence. Record unsupported claims and missing exceptions alongside overall correctness.",
+      "pitfall": "An answer can repeat its sources faithfully while the sources themselves are wrong.",
+      "lesson": {
+        "slug": "rag-evidence",
+        "title": "Check the evidence behind an answer",
+        "href": "https://savemytoken.com/learn/rag-evidence"
+      },
+      "sources": [
+        {
+          "title": "Hugging Face: evaluating RAG",
+          "href": "https://huggingface.co/learn/cookbook/en/rag_evaluation"
+        },
+        {
+          "title": "LangChain: retrieval and RAG",
+          "href": "https://docs.langchain.com/oss/python/deepagents/retrieval"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-evaluation-1",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "Can precision be perfect while retrieval is incomplete?",
+      "answer": "Yes. Retrieving only one of two required passages gives precision 1 and recall 0.5. A missing exception may still make the final answer wrong.",
+      "pitfall": "A high precision number does not establish answer completeness.",
+      "lesson": {
+        "slug": "rag-evaluation",
+        "title": "Measure what Top K changes",
+        "href": "https://savemytoken.com/learn/rag-evaluation"
+      },
+      "sources": [
+        {
+          "title": "Hugging Face: evaluating RAG",
+          "href": "https://huggingface.co/learn/cookbook/en/rag_evaluation"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-evaluation-2",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "Does increasing K always help?",
+      "answer": "It can improve coverage but add irrelevant text and processing cost. Compare evidence coverage, final answers, and latency under the same conditions.",
+      "pitfall": "More context can include outdated or conflicting passages.",
+      "lesson": {
+        "slug": "rag-evaluation",
+        "title": "Measure what Top K changes",
+        "href": "https://savemytoken.com/learn/rag-evaluation"
+      },
+      "sources": [
+        {
+          "title": "Hugging Face: evaluating RAG",
+          "href": "https://huggingface.co/learn/cookbook/en/rag_evaluation"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-evaluation-3",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "How should you compare two RAG configurations?",
+      "answer": "Use the same source snapshot, questions, labels, and evaluation method. Change one setting when diagnosing a cause, and keep a separate held-out set for the final comparison.",
+      "pitfall": "Repeated tuning on the final test set inflates confidence in the result.",
+      "lesson": {
+        "slug": "rag-evaluation",
+        "title": "Measure what Top K changes",
+        "href": "https://savemytoken.com/learn/rag-evaluation"
+      },
+      "sources": [
+        {
+          "title": "Hugging Face: evaluating RAG",
+          "href": "https://huggingface.co/learn/cookbook/en/rag_evaluation"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-evaluation-4",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "Which costs belong in a RAG evaluation?",
+      "answer": "Track ingestion and indexing separately from per-query retrieval, reranking, and generation. Record retries and cache behavior rather than counting only the final model response.",
+      "pitfall": "A local arithmetic example is not evidence of real API savings.",
+      "lesson": {
+        "slug": "rag-evaluation",
+        "title": "Measure what Top K changes",
+        "href": "https://savemytoken.com/learn/rag-evaluation"
+      },
+      "sources": [
+        {
+          "title": "Hugging Face: evaluating RAG",
+          "href": "https://huggingface.co/learn/cookbook/en/rag_evaluation"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "foundation-evaluation-5",
+      "topic": "rag",
+      "level": "Beginner",
+      "prompt": "How do you handle questions with no answer in the corpus?",
+      "answer": "Include them deliberately and measure appropriate abstention and false claims. Keep that result separate from recall over queries that have labeled relevant evidence.",
+      "pitfall": "Dropping uncovered questions hides a common production failure.",
+      "lesson": {
+        "slug": "rag-evaluation",
+        "title": "Measure what Top K changes",
+        "href": "https://savemytoken.com/learn/rag-evaluation"
+      },
+      "sources": [
+        {
+          "title": "Hugging Face: evaluating RAG",
+          "href": "https://huggingface.co/learn/cookbook/en/rag_evaluation"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "scenario-scope-first-ai-pilot",
+      "slug": "scope-first-ai-pilot",
+      "topic": "customer",
+      "level": "Intermediate",
+      "minutes": 10,
+      "title": "Turn “we need AI” into a two-week pilot",
+      "scenario": "A distributor wants an AI assistant for its support team. You have two weeks, one engineer, and access to a sample of resolved tickets. The sponsor wants a visible improvement but has not defined success. What would you propose?",
+      "clarify": [
+        "Which repeated task takes the most operator time, and what happens when it is done incorrectly?",
+        "Who can approve data access, review outputs, and accept the pilot?"
+      ],
+      "approach": [
+        {
+          "title": "Observe a complete case",
+          "body": "Follow an operator from opening a ticket to resolving it. Record the current handling time, required systems, and rework. Select one frequent task with a clear finish, such as drafting a policy-backed response for review."
+        },
+        {
+          "title": "Write the acceptance agreement",
+          "body": "Agree on eligible ticket types, an error definition, reviewer workload, and a baseline comparison. Mark target improvements as pilot goals, not measured savings. Name the customer owner who will judge the result."
+        },
+        {
+          "title": "Ship one measurable slice",
+          "body": "Build a read-only draft flow using approved examples, with the operator retaining the send action. Evaluate held-out tickets, capture rejected drafts, and finish with a go, revise, or stop decision supported by the observed results."
+        }
+      ],
+      "tradeoff": "A narrow pilot covers fewer tickets but lets you attribute changes and learn whether the workflow helps. A broad chatbot may demonstrate more features without establishing value.",
+      "pitfalls": [
+        "Selecting a model before observing the workflow.",
+        "Counting generated drafts as resolved customer problems."
+      ],
+      "followups": [
+        "The sponsor insists on automatic sending. What evidence would you require first?",
+        "What do you cut if data access arrives a week late?"
+      ],
+      "rubric": [
+        "Defines one customer outcome and its baseline.",
+        "Names constraints, ownership, and an explicit acceptance decision.",
+        "Includes a fallback that operators can actually use."
+      ],
+      "sources": [
+        {
+          "title": "Google: Rules of Machine Learning — objectives and metrics",
+          "href": "https://developers.google.com/machine-learning/guides/rules-of-ml/"
+        },
+        {
+          "title": "Anthropic: Demystifying evals for AI agents",
+          "href": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-pilot-with-messy-data",
+      "slug": "pilot-with-messy-data",
+      "topic": "customer",
+      "level": "Intermediate",
+      "minutes": 8,
+      "title": "Deliver a useful pilot with incomplete data",
+      "scenario": "A service company offers 2,000 scanned work orders for an extraction pilot. Some scans are unreadable, several templates changed, and the customer cannot provide a complete ground-truth spreadsheet. How do you plan the first week?",
+      "clarify": [
+        "Which fields drive a downstream decision, and which errors require review?",
+        "Who can label a representative sample and resolve contradictory records?"
+      ],
+      "approach": [
+        {
+          "title": "Inspect before promising coverage",
+          "body": "Sample across templates, dates, scan quality, and common exceptions. Track whether errors come from missing source data, extraction, or interpretation. Ask for the minimum authorized data needed to test those categories."
+        },
+        {
+          "title": "Build a small reviewed set",
+          "body": "Have domain staff label the required fields and mark genuinely ambiguous cases. Reserve a separate sample for validation. Report coverage alongside field accuracy so discarding difficult documents cannot look like an improvement."
+        },
+        {
+          "title": "Deliver with a review queue",
+          "body": "Start with supported templates and show extracted values beside source locations. Route unsupported or ambiguous records to operators. Quantify review effort and maintain a backlog of source-data fixes with customer owners."
+        }
+      ],
+      "tradeoff": "Restricting the supported document set can make the pilot useful sooner, but the customer must see how much work remains outside that boundary.",
+      "pitfalls": [
+        "Treating an absent source field as a model error.",
+        "Evaluating only the clean documents used during development."
+      ],
+      "followups": [
+        "How do you report success when operators correct many outputs?",
+        "A new template arrives tomorrow. What happens?"
+      ],
+      "rubric": [
+        "Separates data quality from model quality.",
+        "Budgets customer review time.",
+        "Measures abstention, coverage, and correction effort."
+      ],
+      "sources": [
+        {
+          "title": "Google: Rules of Machine Learning — objectives and metrics",
+          "href": "https://developers.google.com/machine-learning/guides/rules-of-ml/"
+        },
+        {
+          "title": "Anthropic: Demystifying evals for AI agents",
+          "href": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-manage-pilot-scope-change",
+      "slug": "manage-pilot-scope-change",
+      "topic": "customer",
+      "level": "Advanced",
+      "minutes": 10,
+      "title": "Handle a scope change before the customer demo",
+      "scenario": "Your approved pilot searches an internal support handbook. Three days before the demo, a director asks it to update orders and answer from finance documents too. How do you respond and keep the project moving?",
+      "clarify": [
+        "What decision does the demo need to enable, and which new request is essential to that decision?",
+        "Who owns write permissions and access to the finance documents?"
+      ],
+      "approach": [
+        {
+          "title": "Make the new boundary visible",
+          "body": "Explain that retrieval from a new data domain and modifying orders each add integration and acceptance work. Show the current scope alongside the requested changes, their dependencies, and the evidence already available."
+        },
+        {
+          "title": "Offer a concrete sequence",
+          "body": "Keep the approved search flow as the demonstrable delivery. Offer an order-update design walkthrough or a clearly labeled test-environment prototype only if it serves the decision. Put production writes behind a separate scoped milestone."
+        },
+        {
+          "title": "Confirm the trade in writing",
+          "body": "Agree on what is deferred, the next owner, and which acceptance checks must precede access expansion. Give the sponsor an updated plan they can communicate rather than a technical objection without an alternative."
+        }
+      ],
+      "tradeoff": "A small addition can improve the customer conversation, but combining untested permissions and writes can undermine the original delivery. Decide using the demo's purpose and remaining verification time.",
+      "pitfalls": [
+        "Quietly broadening data access to make the demo work.",
+        "Saying yes without changing the delivery agreement."
+      ],
+      "followups": [
+        "The director calls the boundary unhelpful. What do you show them?",
+        "Which checks are different for reading an order and changing it?"
+      ],
+      "rubric": [
+        "Explains the customer impact of the new scope.",
+        "Proposes a feasible alternative and records the decision.",
+        "Identifies the new permission and acceptance boundaries."
+      ],
+      "sources": [
+        {
+          "title": "Anthropic: Building effective agents",
+          "href": "https://www.anthropic.com/engineering/building-effective-agents"
+        },
+        {
+          "title": "Anthropic: Writing effective tools for agents",
+          "href": "https://www.anthropic.com/engineering/writing-tools-for-agents"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-handoff-ai-pilot",
+      "slug": "handoff-ai-pilot",
+      "topic": "customer",
+      "level": "Advanced",
+      "minutes": 10,
+      "title": "Hand over a pilot the customer can operate",
+      "scenario": "An internal assistant passes its pilot review. Your engagement ends next week, and the customer's platform team will own it. What must be in the handover for the system to remain useful?",
+      "clarify": [
+        "Who owns document updates, application incidents, and model or prompt changes?",
+        "Which operating commitments and escalation hours has the customer accepted?"
+      ],
+      "approach": [
+        {
+          "title": "Transfer an operating contract",
+          "body": "Document supported workflows, known limitations, permissions, versioned configuration, and what the customer accepted. Identify each ongoing task and a named team responsible for it, including data freshness and deletion."
+        },
+        {
+          "title": "Rehearse common failures",
+          "body": "Ask the new operators to diagnose a failed ingestion, inspect a poor answer, and exercise a fallback in a test environment. Supply dashboards and a runbook organized around symptoms, evidence, and reversible recovery steps."
+        },
+        {
+          "title": "Make changes reviewable",
+          "body": "Provide the evaluation set, its access rules, release checks, and rollback procedure. Explain how new failure examples enter the suite. Agree on how future work becomes reusable product improvements rather than an undocumented customer-specific patch."
+        }
+      ],
+      "tradeoff": "Extensive documentation is expensive to maintain. Prioritize the actions the receiving team must perform and verify that the handover actually enables them.",
+      "pitfalls": [
+        "Handing over only source code and API credentials.",
+        "Reporting pilot success as proof of long-term reliability."
+      ],
+      "followups": [
+        "How do you handle an upstream model version change after you leave?",
+        "Which customer-specific pieces would you generalize?"
+      ],
+      "rubric": [
+        "Names operational and data owners.",
+        "Demonstrates recovery and change procedures.",
+        "Separates pilot evidence from ongoing service commitments."
+      ],
+      "sources": [
+        {
+          "title": "Google SRE: Implementing SLOs",
+          "href": "https://sre.google/workbook/implementing-slos/"
+        },
+        {
+          "title": "Google SRE: Canarying releases",
+          "href": "https://sre.google/workbook/canarying-releases/"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-rag-right-source-wrong-answer",
+      "slug": "rag-right-source-wrong-answer",
+      "topic": "rag",
+      "level": "Intermediate",
+      "minutes": 8,
+      "title": "Find the right document and still get the wrong answer",
+      "scenario": "A policy assistant cites the correct handbook but tells a customer that opened products can be returned. The handbook contains an exception excluding them. How would you isolate the failure?",
+      "clarify": [
+        "Was the exception in the exact context sent to the model, or only somewhere in the source document?",
+        "Which source version, query, retrieval settings, and prompt produced the answer?"
+      ],
+      "approach": [
+        {
+          "title": "Inspect the actual evidence path",
+          "body": "Reproduce the case with a redacted trace. Follow the exception through extraction, chunking, candidate retrieval, reranking, and final context assembly. A correct document ID does not establish that the decisive sentence reached generation."
+        },
+        {
+          "title": "Test the failing stage",
+          "body": "If the exception is absent, inspect chunk boundaries and candidate coverage. If present, test whether the answer preserves both the rule and exception with reduced distracting context. Change one factor at a time and retain the original failure as a regression case."
+        },
+        {
+          "title": "Judge claims, not citation presence",
+          "body": "Check whether each material claim follows from the accessible passage. Include negative examples with valid citations but false statements. Review abstention when the policy cannot support an answer."
+        }
+      ],
+      "tradeoff": "More retrieved text can recover an exception but can also add conflicting policy versions. Measure evidence completeness and answer correctness together.",
+      "pitfalls": [
+        "Assuming a citation proves the answer is supported.",
+        "Changing the model before locating the missing evidence."
+      ],
+      "followups": [
+        "How would your diagnosis change if the document is a scanned table?",
+        "What regression test would catch this before a release?"
+      ],
+      "rubric": [
+        "Separates document retrieval from final context.",
+        "Tests an explicit failure hypothesis.",
+        "Checks the rule and its exception at claim level."
+      ],
+      "sources": [
+        {
+          "title": "LangChain: Retrieval",
+          "href": "https://docs.langchain.com/oss/python/langchain/retrieval"
+        },
+        {
+          "title": "Anthropic: Demystifying evals for AI agents",
+          "href": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-chunk-policy-tables",
+      "slug": "chunk-policy-tables",
+      "topic": "rag",
+      "level": "Intermediate",
+      "minutes": 8,
+      "title": "Keep table headings and exceptions together",
+      "scenario": "A maintenance handbook mixes paragraphs, equipment tables, and footnotes. Fixed-size chunks separate a replacement interval from its equipment heading. How would you choose and test a better chunking strategy?",
+      "clarify": [
+        "Which queries require multiple cells, a heading, or a footnote to be interpreted correctly?",
+        "What structure survives the document extraction stage?"
+      ],
+      "approach": [
+        {
+          "title": "Define an evidence unit",
+          "body": "Identify complete units for the target queries: a procedure with prerequisites, or a table row with headers and applicable footnotes. Preserve source locations and document versions so a reviewer can inspect the original context."
+        },
+        {
+          "title": "Compare concrete candidates",
+          "body": "Try structure-aware boundaries and bounded parent-context expansion against the current splitter. Avoid treating one token length or overlap percentage as universally correct. Keep extraction, embeddings, and evaluation queries fixed during the first comparison."
+        },
+        {
+          "title": "Evaluate downstream use",
+          "body": "Label whether each retrieved result carries enough information to answer. Then inspect generated answers, context size, and latency. Include long tables and exception-heavy procedures in a held-out set before selecting the new default."
+        }
+      ],
+      "tradeoff": "Larger evidence units retain meaning but may bring irrelevant rows. Smaller searchable units plus controlled surrounding context are another option to test.",
+      "pitfalls": [
+        "Tuning chunk length while the parser has already lost table headers.",
+        "Reporting retrieval similarity as answer correctness."
+      ],
+      "followups": [
+        "How would you handle a table spanning three pages?",
+        "When would overlapping chunks make the result worse?"
+      ],
+      "rubric": [
+        "Defines what a complete piece of evidence contains.",
+        "Keeps source structure and locations.",
+        "Compares answer quality and context cost on the same queries."
+      ],
+      "sources": [
+        {
+          "title": "LangChain: Retrieval",
+          "href": "https://docs.langchain.com/oss/python/langchain/retrieval"
+        },
+        {
+          "title": "Anthropic: Effective context engineering for AI agents",
+          "href": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-hybrid-search-product-codes",
+      "slug": "hybrid-search-product-codes",
+      "topic": "rag",
+      "level": "Intermediate",
+      "minutes": 10,
+      "title": "Retrieve exact product codes and everyday language",
+      "scenario": "A repair assistant handles both “E-417 on ZX-8” and “the pump rattles after startup.” Vector-only retrieval handles some paraphrases but misses exact code matches. How would you improve and evaluate retrieval?",
+      "clarify": [
+        "Do extraction and indexing preserve punctuation, model numbers, and code-to-product relationships?",
+        "How often do users provide a code, a description, or both?"
+      ],
+      "approach": [
+        {
+          "title": "Build query slices",
+          "body": "Create labeled examples for exact identifiers, paraphrases, and mixed queries. Inspect failures caused by broken text extraction or normalization before adding another retrieval layer."
+        },
+        {
+          "title": "Combine eligible candidates",
+          "body": "Compare lexical and dense retrieval, then combine their ranked lists with an explicit method such as reciprocal rank fusion. Apply the same access scope to both paths. Deduplicate by stable passage IDs before assembling evidence."
+        },
+        {
+          "title": "Test optional reranking",
+          "body": "Evaluate a reranker over a bounded candidate set only if the combined ranking leaves useful evidence buried. Track per-slice coverage, downstream answers, and latency; keep a simple baseline to show which stage earns its cost."
+        }
+      ],
+      "tradeoff": "Hybrid retrieval introduces another index and tuning surface. It is useful only if the measured coverage gains justify its operating and query costs.",
+      "pitfalls": [
+        "Adding raw lexical and vector scores without considering their scales.",
+        "Expecting a reranker to recover documents absent from all candidates."
+      ],
+      "followups": [
+        "What happens if the two result lists use different chunk IDs?",
+        "Would you use identical settings for all query slices?"
+      ],
+      "rubric": [
+        "Tests exact-match and semantic needs separately.",
+        "Explains fusion versus reranking.",
+        "Preserves permissions and measures incremental benefit."
+      ],
+      "sources": [
+        {
+          "title": "Elasticsearch: Reciprocal rank fusion",
+          "href": "https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion"
+        },
+        {
+          "title": "Qdrant: Filtering",
+          "href": "https://qdrant.tech/documentation/search/filtering/"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-rag-policy-update-and-deletion",
+      "slug": "rag-policy-update-and-deletion",
+      "topic": "rag",
+      "level": "Advanced",
+      "minutes": 10,
+      "title": "Stop answering from a withdrawn policy",
+      "scenario": "HR replaces a leave policy and withdraws the old document. The assistant still returns the old allowance, sometimes with a working citation. Design an update and deletion process that you can verify.",
+      "clarify": [
+        "Is the stale result coming from the source, the index, a response cache, or conversation history?",
+        "Which timestamp means the policy became effective, and who decides source precedence?"
+      ],
+      "approach": [
+        {
+          "title": "Trace identity and versions",
+          "body": "Give documents and chunks stable identities, track revisions, and record effective dates separately from ingestion times. Inspect the answer's source version and all caches involved in producing it."
+        },
+        {
+          "title": "Make withdrawal observable",
+          "body": "Immediately exclude withdrawn records from eligible retrieval. Propagate deletion or replacement to indexes and dependent caches, and reconcile failed updates. A user continuing an old conversation should be rechecked against the current authorized source state."
+        },
+        {
+          "title": "Verify with a known question",
+          "body": "Run a regression question that distinguishes the two policies. Check retrieved IDs, citations, cache behavior, and the final answer. Monitor update lag and expose uncertainty if a required source is temporarily unavailable."
+        }
+      ],
+      "tradeoff": "Immediate exclusion can reduce answer coverage while replacement indexing completes. Returning an explicit gap is preferable to silently treating withdrawn policy as current.",
+      "pitfalls": [
+        "Updating the source file without invalidating derived answers.",
+        "Assuming the latest upload is always the authoritative policy."
+      ],
+      "followups": [
+        "How would you recover from a partially failed re-index?",
+        "What if two active policies apply to different employee groups?"
+      ],
+      "rubric": [
+        "Tracks revisions across every derived store.",
+        "Distinguishes deletion from eventual background cleanup.",
+        "Verifies the update with an end-to-end case."
+      ],
+      "sources": [
+        {
+          "title": "LangChain: Retrieval",
+          "href": "https://docs.langchain.com/oss/python/langchain/retrieval"
+        },
+        {
+          "title": "Qdrant: Filtering",
+          "href": "https://qdrant.tech/documentation/search/filtering/"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-workflow-or-autonomous-agent",
+      "slug": "workflow-or-autonomous-agent",
+      "topic": "agent",
+      "level": "Intermediate",
+      "minutes": 8,
+      "title": "Choose a workflow, one agent, or several",
+      "scenario": "An operations team wants a “multi-agent” system to classify requests, look up account status, and draft a response. The steps are usually predictable, but a few requests need investigation. What architecture would you start with?",
+      "clarify": [
+        "Which decisions genuinely require choosing the next action from new evidence?",
+        "Can investigation be separated from the routine path, and what can each path access?"
+      ],
+      "approach": [
+        {
+          "title": "Model the routine path",
+          "body": "Write the common process as explicit steps with typed inputs and outputs. Use normal application code for deterministic checks and a bounded model call where interpretation is needed. Keep an operator path for unsupported requests."
+        },
+        {
+          "title": "Locate the uncertain decisions",
+          "body": "Prototype a single bounded agent for cases that require evidence-driven exploration. Specify allowed tools and terminal states. Compare it against the workflow on the same cases before introducing separate agent roles."
+        },
+        {
+          "title": "Justify any split",
+          "body": "Add multiple agents only for a demonstrated need such as independent parallel work or distinct access scopes. Define the handoff contract, result validation, and shared-state ownership; measure coordination cost and failure propagation."
+        }
+      ],
+      "tradeoff": "A workflow is easier to inspect but can become brittle when paths multiply. Dynamic investigation adds flexibility while making execution cost and behavior harder to bound.",
+      "pitfalls": [
+        "Assigning an agent to every function before measuring a baseline.",
+        "Treating role descriptions as enforced permission boundaries."
+      ],
+      "followups": [
+        "How do you prevent two workers from editing the same record?",
+        "What evidence would persuade you to merge the agents again?"
+      ],
+      "rubric": [
+        "Chooses architecture from decision uncertainty.",
+        "Accounts for coordination and access boundaries.",
+        "Defines a comparison that could disprove the proposed design."
+      ],
+      "sources": [
+        {
+          "title": "Anthropic: Building effective agents",
+          "href": "https://www.anthropic.com/engineering/building-effective-agents"
+        },
+        {
+          "title": "Anthropic: Writing effective tools for agents",
+          "href": "https://www.anthropic.com/engineering/writing-tools-for-agents"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-agent-selects-wrong-tool",
+      "slug": "agent-selects-wrong-tool",
+      "topic": "agent",
+      "level": "Intermediate",
+      "minutes": 8,
+      "title": "Debug an agent that calls the wrong tool",
+      "scenario": "An agent sometimes uses update_customer when a user only asks to see a customer record. Both tools accept an account ID and their descriptions overlap. How would you fix the interface and execution path?",
+      "clarify": [
+        "Was the write merely proposed, or did the application execute it?",
+        "How are user intent, authenticated identity, and action permissions checked?"
+      ],
+      "approach": [
+        {
+          "title": "Contain the execution risk",
+          "body": "Inspect affected traces and disable unintended writes while investigating. Require the execution layer to validate allowed action, resource scope, and arguments before side effects. A correctly shaped tool call is still only a proposal."
+        },
+        {
+          "title": "Make the tools distinguishable",
+          "body": "Give reads and writes distinct names and concise descriptions of when each applies. Require explicit fields for updates and reject unexpected arguments. Return structured, bounded results and actionable errors rather than ambiguous success strings."
+        },
+        {
+          "title": "Evaluate near misses",
+          "body": "Test read-only requests, ambiguous instructions, denied resources, and malicious text in retrieved data. Check both tool selection and resulting state. Confirm rejected calls cannot enter the write function."
+        }
+      ],
+      "tradeoff": "More tools can improve specificity but also increase selection burden. Expose only the relevant authorized operations for the current task.",
+      "pitfalls": [
+        "Solving a permission defect only by rewriting the system prompt.",
+        "Accepting an account ID because the model supplied valid JSON."
+      ],
+      "followups": [
+        "How would you design confirmation for a permitted write?",
+        "What should the agent see when access is denied?"
+      ],
+      "rubric": [
+        "Separates selection, validation, authorization, and execution.",
+        "Improves the actual tool contract.",
+        "Tests external effects, including rejected requests."
+      ],
+      "sources": [
+        {
+          "title": "Anthropic: Writing effective tools for agents",
+          "href": "https://www.anthropic.com/engineering/writing-tools-for-agents"
+        },
+        {
+          "title": "OpenAI: Structured model outputs",
+          "href": "https://developers.openai.com/api/docs/guides/structured-outputs"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-tool-timeout-duplicate-write",
+      "slug": "tool-timeout-duplicate-write",
+      "topic": "agent",
+      "level": "Advanced",
+      "minutes": 10,
+      "title": "A tool timed out. Did the action happen?",
+      "scenario": "An agent submits a warehouse dispatch request. The service times out before returning a result, and retrying could send a second parcel. How should the agent and application recover?",
+      "clarify": [
+        "Does the service support an idempotency key or a lookup by client operation ID?",
+        "Can you distinguish a failed request from a completed operation whose response was lost?"
+      ],
+      "approach": [
+        {
+          "title": "Represent the uncertainty",
+          "body": "Record a stable operation ID and an unknown outcome. Do not label the dispatch failed solely because the caller timed out. Keep this state separate from permanent rejection and confirmed success."
+        },
+        {
+          "title": "Reconcile before repeating",
+          "body": "Query the service for the operation state if supported. For safe retries, reuse the same idempotency key and intent, respecting the provider's scope and retention contract. A new key would represent another action, not recovery of this one."
+        },
+        {
+          "title": "Bound recovery",
+          "body": "Apply retry limits and a deadline. If the outcome cannot be established safely, route to a human reconciliation queue with the operation record. Test a committed write followed by a lost response, not just a pre-execution network failure."
+        }
+      ],
+      "tradeoff": "Pausing an uncertain action can delay fulfillment. Automatically repeating it can create a second external effect that is harder to reverse.",
+      "pitfalls": [
+        "Assuming all timeouts are safe to retry.",
+        "Generating a fresh idempotency key on every attempt."
+      ],
+      "followups": [
+        "What if the idempotency window expired?",
+        "How do you report partial completion to the customer?"
+      ],
+      "rubric": [
+        "Names the unknown-outcome state.",
+        "Keeps operation identity stable across recovery.",
+        "Tests duplicate prevention at the real side-effect boundary."
+      ],
+      "sources": [
+        {
+          "title": "AWS Builders’ Library: Making retries safe with idempotent APIs",
+          "href": "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-bound-runaway-agent",
+      "slug": "bound-runaway-agent",
+      "topic": "agent",
+      "level": "Advanced",
+      "minutes": 8,
+      "title": "Stop an agent before a loop becomes a bill",
+      "scenario": "A research agent keeps reformulating the same failed search and spends its entire daily allowance on one task. It stays under a per-call timeout, so the existing timeout check never stops it. What controls are missing?",
+      "clarify": [
+        "What counts as a completed task, and which failures should terminate it?",
+        "Are limits shared by nested agents, retries, and parallel calls?"
+      ],
+      "approach": [
+        {
+          "title": "Budget the whole run",
+          "body": "Set limits for total calls, elapsed time, and spend at the controller boundary. Include child work and retries in the same accounting scope. Reserve estimated cost before concurrent work so multiple branches cannot all consume the remaining budget."
+        },
+        {
+          "title": "Require meaningful progress",
+          "body": "Track action identity, results, and changes in evidence. Detect repeated unsuccessful actions while allowing legitimate pagination or polling. Require a new hypothesis, new input, or escalation when the same approach no longer improves the task state."
+        },
+        {
+          "title": "Stop with usable state",
+          "body": "Cancel pending work where supported, record completed actions, and distinguish budget exhaustion from success. Return bounded findings and remaining gaps. Test hung tools, concurrent branches, and misleading success messages."
+        }
+      ],
+      "tradeoff": "Tight limits can stop valid long investigations. Make the budget visible and adjustable for the task while retaining a hard ceiling and an explicit stop reason.",
+      "pitfalls": [
+        "Relying only on the model to decide when enough money was spent.",
+        "Applying separate full budgets to every child agent."
+      ],
+      "followups": [
+        "Can cancellation guarantee that remote work stops immediately?",
+        "How do you distinguish a useful retry from a loop?"
+      ],
+      "rubric": [
+        "Accounts for aggregate work, not only individual calls.",
+        "Defines progress and terminal states.",
+        "Preserves evidence and external-action status at shutdown."
+      ],
+      "sources": [
+        {
+          "title": "Anthropic: Building effective agents",
+          "href": "https://www.anthropic.com/engineering/building-effective-agents"
+        },
+        {
+          "title": "Anthropic: Demystifying evals for AI agents",
+          "href": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-summarize-without-losing-constraints",
+      "slug": "summarize-without-losing-constraints",
+      "topic": "context",
+      "level": "Intermediate",
+      "minutes": 8,
+      "title": "Shorten a conversation without losing its constraints",
+      "scenario": "A travel-planning assistant exceeds its context budget after many revisions. A summary reduces tokens but forgets that the traveler cannot use stairs. How would you redesign the retained context?",
+      "clarify": [
+        "Which facts are binding constraints, which were corrected, and which are historical discussion?",
+        "Does the task need original evidence or just a current structured state?"
+      ],
+      "approach": [
+        {
+          "title": "Separate state from narration",
+          "body": "Store explicit current constraints, decisions, and unresolved questions in a scoped task record. Retain provenance and corrections. Use a conversational summary for background, not as the sole store of requirements that determine acceptable results."
+        },
+        {
+          "title": "Build a bounded prompt",
+          "body": "Keep the current request, binding constraints, recent relevant turns, and targeted evidence. Budget tool results and output space as well as messages. Retrieve older detail when needed rather than keeping every previous itinerary in the active context."
+        },
+        {
+          "title": "Test retention under revision",
+          "body": "Create long conversations with corrected preferences, distractors, and conflicting old plans. Check whether generated itineraries satisfy the latest constraints after compression. Compare token usage and task success on the same conversations."
+        }
+      ],
+      "tradeoff": "Structured state takes more application work and can itself be wrong. Validate updates and retain enough provenance to inspect how a constraint entered the record.",
+      "pitfalls": [
+        "Assuming a shorter summary is better because it costs less.",
+        "Treating all earlier messages as equally authoritative."
+      ],
+      "followups": [
+        "How would a user correct an incorrectly stored constraint?",
+        "Which original turns must remain recoverable?"
+      ],
+      "rubric": [
+        "Protects task-critical constraints and corrections.",
+        "Accounts for the whole context budget.",
+        "Tests successful task completion after compression."
+      ],
+      "sources": [
+        {
+          "title": "Anthropic: Effective context engineering for AI agents",
+          "href": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+        },
+        {
+          "title": "LangChain: Short-term memory",
+          "href": "https://docs.langchain.com/oss/python/langchain/short-term-memory"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-memory-correction-and-expiration",
+      "slug": "memory-correction-and-expiration",
+      "topic": "context",
+      "level": "Intermediate",
+      "minutes": 8,
+      "title": "Correct a remembered preference without reviving the old one",
+      "scenario": "A user changes a project preference from Python to TypeScript. The assistant acknowledges the change, but a later session retrieves the old preference from vector memory. How would you design reliable corrections?",
+      "clarify": [
+        "Is the preference global, specific to one project, or only for the current task?",
+        "Where can old values survive: history, memory records, embeddings, and cached responses?"
+      ],
+      "approach": [
+        {
+          "title": "Define a scoped record",
+          "body": "Represent the owner, project scope, preference key, revision, source, and validity. Derive user identity from authenticated context. A retrieved sentence should not override a more authoritative correction simply because it ranks highly."
+        },
+        {
+          "title": "Propagate the correction",
+          "body": "Supersede the old value in the authoritative store and update or exclude its derived retrieval records. Invalidate affected cached context. Preserve an audit trail only under an appropriate retention policy, not as another active preference candidate."
+        },
+        {
+          "title": "Test the complete lifecycle",
+          "body": "Verify recall before and after correction, across sessions and projects. Test expiration, deletion, ambiguous scope, and other users' records. Ask for clarification when a correction does not identify which project it applies to."
+        }
+      ],
+      "tradeoff": "Keeping more memories can improve recall but increases conflict and maintenance work. Store information with a defined use and lifecycle.",
+      "pitfalls": [
+        "Appending a correction while leaving the old value equally eligible.",
+        "Using embedding similarity as a precedence rule."
+      ],
+      "followups": [
+        "What should happen if the user asks to forget the preference?",
+        "How does this differ from trimming conversation history?"
+      ],
+      "rubric": [
+        "Separates storage, retrieval, and authority.",
+        "Handles scope, corrections, and deletion.",
+        "Tests isolation and stale derived records."
+      ],
+      "sources": [
+        {
+          "title": "LangChain: Short-term memory",
+          "href": "https://docs.langchain.com/oss/python/langchain/short-term-memory"
+        },
+        {
+          "title": "Qdrant: Filtering",
+          "href": "https://qdrant.tech/documentation/search/filtering/"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-lower-cost-model-routing",
+      "slug": "lower-cost-model-routing",
+      "topic": "context",
+      "level": "Advanced",
+      "minutes": 10,
+      "title": "Reduce model spend without hiding quality losses",
+      "scenario": "A support-drafting feature must work within a smaller operating budget. Management proposes replacing the model for every request. How would you compare a full replacement with a routing strategy?",
+      "clarify": [
+        "Which request types create most spend, and which mistakes are expensive for operators?",
+        "Does the budget include retries, routing calls, retrieval, and manual rework?"
+      ],
+      "approach": [
+        {
+          "title": "Establish cost per useful outcome",
+          "body": "Measure request mix, input and output tokens, cache use, failed calls, and accepted drafts. Use current provider prices with the relevant conditions. Avoid inferring production savings from headline token prices alone."
+        },
+        {
+          "title": "Compare policies on fixed cases",
+          "body": "Evaluate the existing model, a cheaper candidate, and a simple routing rule on the same held-out tasks. Slice results by complexity, language, and exception handling. Include the router's cost and mistakes, not just the selected model's answer."
+        },
+        {
+          "title": "Release with a quality boundary",
+          "body": "Define which failures trigger escalation and test whether the validator catches them. Introduce the policy gradually, monitor accepted outcomes and total spend, and retain a reversible configuration. Do not treat model self-confidence as calibrated correctness."
+        }
+      ],
+      "tradeoff": "Routing can preserve difficult-case quality, but an inaccurate router and repeated escalation may erase the savings. A simpler model change may be better if it passes the actual workload.",
+      "pitfalls": [
+        "Quoting a savings percentage before measuring the traffic mix.",
+        "Evaluating only the easy cases selected for the cheaper model."
+      ],
+      "followups": [
+        "What if the fallback rate doubles after launch?",
+        "How would you compare a shorter prompt before changing models?"
+      ],
+      "rubric": [
+        "Measures full cost per accepted outcome.",
+        "Tests quality by workload slice.",
+        "Includes router and escalation failures in the comparison."
+      ],
+      "sources": [
+        {
+          "title": "Anthropic: Building effective agents",
+          "href": "https://www.anthropic.com/engineering/building-effective-agents"
+        },
+        {
+          "title": "Anthropic: Demystifying evals for AI agents",
+          "href": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-prompt-cache-misses",
+      "slug": "prompt-cache-misses",
+      "topic": "context",
+      "level": "Intermediate",
+      "minutes": 8,
+      "title": "Explain why a long prompt is not getting cache hits",
+      "scenario": "Your app sends a long policy and tool definitions on every request. Caching was enabled, but billed usage barely changed. Each request also includes a timestamp and user-specific settings near the beginning. How do you investigate?",
+      "clarify": [
+        "What does this provider cache, and what are its eligibility, lifetime, write, and read billing rules?",
+        "Do actual request logs and usage fields show reuse for the same eligible prefix?"
+      ],
+      "approach": [
+        {
+          "title": "Inspect the request shape",
+          "body": "Compare consecutive serialized requests. Look for changing timestamps, tool order, formatting, and user data inside the intended reusable prefix. Confirm the endpoint and model support the requested caching behavior."
+        },
+        {
+          "title": "Separate stable and variable content",
+          "body": "Place eligible shared instructions and tool definitions in a stable order, with per-request content afterward where the provider's rules permit. Keep version changes deliberate. Do not move sensitive data across users merely to improve reuse."
+        },
+        {
+          "title": "Measure warm and cold behavior",
+          "body": "Run controlled repeated requests within the relevant cache lifetime. Inspect cache-specific usage and compare total billed reads, writes, and uncached tokens. Report results for this workload rather than assuming a universal discount."
+        }
+      ],
+      "tradeoff": "Maintaining a stable prefix can improve reuse but must not freeze a policy that needs updating. Correctness and version invalidation remain part of the design.",
+      "pitfalls": [
+        "Confusing prompt-prefix caching with reusing a previous answer.",
+        "Comparing only the second request while ignoring cache creation cost."
+      ],
+      "followups": [
+        "How do frequent policy updates change the economics?",
+        "Would a semantic response cache solve the same problem?"
+      ],
+      "rubric": [
+        "Checks provider-specific eligibility and billing.",
+        "Finds accidental prefix variation.",
+        "Measures total cost and preserves data boundaries."
+      ],
+      "sources": [
+        {
+          "title": "Anthropic: Prompt caching",
+          "href": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-evaluation-set-before-launch",
+      "slug": "evaluation-set-before-launch",
+      "topic": "evaluation",
+      "level": "Intermediate",
+      "minutes": 10,
+      "title": "Decide whether a good demo is ready for users",
+      "scenario": "A knowledge assistant answers the ten demo questions well. The customer wants to invite the whole company tomorrow. What evaluation would you run and how would you make the release decision?",
+      "clarify": [
+        "Which user groups and task types will the release serve, including unsupported requests?",
+        "What failures are unacceptable and who owns the acceptance decision?"
+      ],
+      "approach": [
+        {
+          "title": "Build a representative test set",
+          "body": "Collect authorized examples from intended workflows. Include common requests, rare exceptions, unanswerable questions, conflicting sources, and access boundaries. Keep development cases separate from the held-out release check."
+        },
+        {
+          "title": "Use explicit grading rules",
+          "body": "Define required evidence, acceptable answers, critical failures, and appropriate abstention with domain reviewers. Combine deterministic checks, human review, and calibrated automated graders where useful. Record model, prompt, data, and tool versions."
+        },
+        {
+          "title": "Make a bounded release decision",
+          "body": "Report results by task slice alongside sample sizes, latency, and cost. For sparse evidence, propose a restricted rollout with monitoring and a fallback. Agree on stop conditions before expanding access."
+        }
+      ],
+      "tradeoff": "More testing delays availability but can expose hidden workload gaps. A smaller supported release is an option when the evidence is insufficient for the full audience.",
+      "pitfalls": [
+        "Reusing the rehearsed demo set as the only acceptance test.",
+        "Averaging a critical permission failure into a high overall score."
+      ],
+      "followups": [
+        "How do you add production failures without overfitting the test set?",
+        "What changes if the system can perform actions?"
+      ],
+      "rubric": [
+        "Defines representative cases and explicit acceptance criteria.",
+        "Reports uncertainty and slice-level failures.",
+        "Links the evidence to a practical release boundary."
+      ],
+      "sources": [
+        {
+          "title": "Anthropic: Demystifying evals for AI agents",
+          "href": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+        },
+        {
+          "title": "Google SRE: Canarying releases",
+          "href": "https://sre.google/workbook/canarying-releases/"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-calibrate-llm-judge",
+      "slug": "calibrate-llm-judge",
+      "topic": "evaluation",
+      "level": "Advanced",
+      "minutes": 10,
+      "title": "An LLM judge rewards longer answers. Can you trust it?",
+      "scenario": "Your automatic evaluator prefers a verbose answer that adds an unsupported claim over a concise correct answer. Its scores disagree with support reviewers. How would you repair the evaluation?",
+      "clarify": [
+        "What dimensions is the judge supposed to measure, and does it have the actual source evidence?",
+        "How were its scores compared with human labels across different error types?"
+      ],
+      "approach": [
+        {
+          "title": "Separate the criteria",
+          "body": "Create a rubric for support, completeness, relevance, and style instead of one vague quality score. Add concrete positive and negative examples, including fluent answers with false claims. Decide how critical errors affect acceptance."
+        },
+        {
+          "title": "Measure judge behavior",
+          "body": "Use an independently reviewed set. For pairwise grading, swap answer order and check consistency. Examine false acceptances, false rejections, and disagreements by category. Mask irrelevant model identity and test whether length alone changes a decision."
+        },
+        {
+          "title": "Version and audit the grader",
+          "body": "Record the judge model, prompt, rubric, and evidence version. Recalibrate after changes and route important disagreements to people. Treat a model-generated score as a measurement needing validation rather than ground truth."
+        }
+      ],
+      "tradeoff": "Human review is costly and can disagree too. Spend it on rubric design, representative calibration, and consequential disagreements rather than every easy case.",
+      "pitfalls": [
+        "Choosing the judge because it agrees with the preferred model.",
+        "Using the same examples to tune and claim final evaluator accuracy."
+      ],
+      "followups": [
+        "What would you do if human reviewers disagree?",
+        "Which checks could be deterministic instead?"
+      ],
+      "rubric": [
+        "Identifies specific evaluator biases.",
+        "Calibrates against independent review.",
+        "Keeps grader changes observable and consequential failures visible."
+      ],
+      "sources": [
+        {
+          "title": "Anthropic: Demystifying evals for AI agents",
+          "href": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-agent-outcome-versus-trajectory",
+      "slug": "agent-outcome-versus-trajectory",
+      "topic": "evaluation",
+      "level": "Advanced",
+      "minutes": 10,
+      "title": "An agent reports success, but the task is incomplete",
+      "scenario": "A scheduling agent says it booked a meeting, but the test calendar contains no event. Another run creates the event twice. How should an evaluation score the outcome and the steps taken?",
+      "clarify": [
+        "What exact calendar state and participant constraints define success?",
+        "Can the test environment be reset and external effects inspected independently?"
+      ],
+      "approach": [
+        {
+          "title": "Verify observable state",
+          "body": "Grade whether one intended event exists with the correct participants, time, and authorization. Check for duplicate or unwanted events. A final natural-language success message is evidence of a claim, not proof that the calendar changed."
+        },
+        {
+          "title": "Inspect the execution trace",
+          "body": "Examine selected tools, arguments, results, retries, and approval handling to explain failures. Allow different valid paths unless the task requires a specific sequence. Measure wasted steps without penalizing reasonable recovery automatically."
+        },
+        {
+          "title": "Run isolated trials",
+          "body": "Reset fixtures between trials, capture dependencies and versions, and repeat tasks to observe variability. Report task success and harmful side effects separately. Add the missing-event and duplicate-event cases to the regression suite."
+        }
+      ],
+      "tradeoff": "A strict expected trace is easy to compare but can reject a legitimate alternative plan. Outcome checks need to capture side effects, while trace checks should explain or enforce meaningful constraints.",
+      "pitfalls": [
+        "Letting the agent grade its own completion statement.",
+        "Reusing a dirty calendar fixture across trials."
+      ],
+      "followups": [
+        "How would you test a timeout after the event was created?",
+        "What if the task has several acceptable meeting times?"
+      ],
+      "rubric": [
+        "Checks state independently of the final response.",
+        "Detects harmful extra actions.",
+        "Uses repeatable, isolated trials and flexible valid-path criteria."
+      ],
+      "sources": [
+        {
+          "title": "Anthropic: Demystifying evals for AI agents",
+          "href": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+        },
+        {
+          "title": "AWS Builders’ Library: Making retries safe with idempotent APIs",
+          "href": "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-valid-json-wrong-business-result",
+      "slug": "valid-json-wrong-business-result",
+      "topic": "evaluation",
+      "level": "Intermediate",
+      "minutes": 8,
+      "title": "Valid JSON, wrong business result",
+      "scenario": "An extraction service always returns parseable JSON, yet it omits required fields and occasionally proposes a negative quantity. The team says JSON mode guarantees correctness. How would you redesign validation?",
+      "clarify": [
+        "Does the selected API mode guarantee JSON syntax or adherence to a supported schema?",
+        "Which constraints are structural, and which require business data or permissions?"
+      ],
+      "approach": [
+        {
+          "title": "State the guarantees accurately",
+          "body": "Distinguish JSON syntax from schema adherence. Where supported, use a strict structured-output schema for required fields, types, and permitted values. Verify the provider's supported subset rather than assuming every JSON Schema keyword is enforced."
+        },
+        {
+          "title": "Validate at the application boundary",
+          "body": "Parse and validate responses before downstream use. Check quantity ranges, record existence, units, and relevant business rules with authoritative data. A schema-valid customer ID still does not establish authorization to act on that customer."
+        },
+        {
+          "title": "Handle non-success explicitly",
+          "body": "Recognize refusals, incomplete responses, and transport errors. Use bounded correction or review for recoverable issues, and reject unsafe output before side effects. Test malformed, incomplete, schema-valid-but-wrong, and adversarial cases."
+        }
+      ],
+      "tradeoff": "Stricter constraints reduce structural variation but cannot determine factual truth. Complex business checks often belong outside generation where they can be tested deterministically.",
+      "pitfalls": [
+        "Treating JSON mode as a full schema guarantee.",
+        "Automatically executing a valid tool object without business validation."
+      ],
+      "followups": [
+        "What do you do with a refusal that does not match the business schema?",
+        "How does streaming change validation before display or execution?"
+      ],
+      "rubric": [
+        "Separates syntax, schema, semantics, and authorization.",
+        "Checks actual provider behavior and failure states.",
+        "Validates before downstream effects."
+      ],
+      "sources": [
+        {
+          "title": "OpenAI: Structured model outputs",
+          "href": "https://developers.openai.com/api/docs/guides/structured-outputs"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-debug-rag-tail-latency",
+      "slug": "debug-rag-tail-latency",
+      "topic": "production",
+      "level": "Intermediate",
+      "minutes": 10,
+      "title": "The average is fast. Why are users waiting?",
+      "scenario": "An internal assistant has acceptable average latency, but some users wait more than ten seconds. It performs retrieval, reranking, generation, and optional tool calls. How do you find and improve the slow path?",
+      "clarify": [
+        "Does the target describe time to first useful output or completed answers?",
+        "Which users, payload sizes, and concurrency levels appear in the slow tail?"
+      ],
+      "approach": [
+        {
+          "title": "Measure the complete path",
+          "body": "Record queue time and stage-level latency within a request trace. Separate first-token time from completion and include retries. Compare tail percentiles by task type and load instead of relying on a single overall average."
+        },
+        {
+          "title": "Test the leading bottleneck",
+          "body": "Inspect the slow traces before changing infrastructure. If reranking dominates, test fewer candidates; if generation dominates, inspect context and output size. If the queue dominates, review concurrency and admission control. Measure the quality consequence of each change."
+        },
+        {
+          "title": "Protect the deadline",
+          "body": "Give expensive stages bounded time and define acceptable degradation for optional work. Use streaming when useful to users, but still enforce a completion budget. Load-test the intended mix, including cold paths and dependency delays."
+        }
+      ],
+      "tradeoff": "Skipping a stage can improve speed while damaging a particular class of answers. Compare latency and quality for the affected slice rather than declaring success from the aggregate.",
+      "pitfalls": [
+        "Calling a fast first token proof of a fast completed task.",
+        "Optimizing the model when most time is spent waiting in a queue."
+      ],
+      "followups": [
+        "How do you choose a latency objective with the customer?",
+        "What happens when the optional tool times out?"
+      ],
+      "rubric": [
+        "Defines the user-visible latency objective.",
+        "Uses traces and tail measurements to locate the bottleneck.",
+        "Evaluates quality after each performance change."
+      ],
+      "sources": [
+        {
+          "title": "Google SRE: Implementing SLOs",
+          "href": "https://sre.google/workbook/implementing-slos/"
+        },
+        {
+          "title": "LangChain: Retrieval",
+          "href": "https://docs.langchain.com/oss/python/langchain/retrieval"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-provider-outage-fallback",
+      "slug": "provider-outage-fallback",
+      "topic": "production",
+      "level": "Advanced",
+      "minutes": 10,
+      "title": "Keep a useful service during a provider outage",
+      "scenario": "Your primary model provider starts timing out during peak traffic. A backup model is configured, but it uses different tool-call behavior and has never handled live requests. What would a credible recovery design include?",
+      "clarify": [
+        "Which operations can degrade to read-only or human handling?",
+        "Has the backup been tested for task quality, schemas, data handling, capacity, and cost?"
+      ],
+      "approach": [
+        {
+          "title": "Bound pressure on the dependency",
+          "body": "Set per-attempt and whole-request deadlines. Retry temporary failures with bounded backoff and jitter where safe, and stop sending new work to a repeatedly failing route. Control queues so retries do not amplify the outage."
+        },
+        {
+          "title": "Treat fallback as a tested product path",
+          "body": "Evaluate the secondary model against the same acceptance suite and tool contract. Check which tasks it can safely support. For unsupported work, provide a clear degraded mode or human handoff rather than silently lowering the service's guarantees."
+        },
+        {
+          "title": "Exercise recovery and return",
+          "body": "Simulate timeouts, rate limits, partial responses, and fallback exhaustion. Track routing decisions and user outcomes. Define how traffic returns to the primary gradually, and reconcile uncertain external actions before any repeat."
+        }
+      ],
+      "tradeoff": "A backup adds integration and operating cost. For some tasks, a reliable human or read-only fallback offers more value than an untested second model.",
+      "pitfalls": [
+        "Assuming an API-compatible endpoint has equivalent behavior.",
+        "Retrying every request at every layer without a shared deadline."
+      ],
+      "followups": [
+        "What if both providers share the same upstream dependency?",
+        "How do you prevent failover from doubling a write?"
+      ],
+      "rubric": [
+        "Bounds retry and queue amplification.",
+        "Tests the fallback's actual capability.",
+        "Includes return-to-normal and uncertain-action handling."
+      ],
+      "sources": [
+        {
+          "title": "AWS Builders’ Library: Making retries safe with idempotent APIs",
+          "href": "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/"
+        },
+        {
+          "title": "Google SRE: Implementing SLOs",
+          "href": "https://sre.google/workbook/implementing-slos/"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-tenant-isolation-in-rag",
+      "slug": "tenant-isolation-in-rag",
+      "topic": "production",
+      "level": "Advanced",
+      "minutes": 10,
+      "title": "Keep one customer's evidence out of another's answer",
+      "scenario": "A shared RAG service stores documents for several customers. The model supplies a tenant_id argument when requesting a search, and a shared response cache keys only on the question text. Review the design.",
+      "clarify": [
+        "Where does the trusted user and tenant identity originate?",
+        "Do retrieval, source links, caches, logs, and tools all enforce the same access policy?"
+      ],
+      "approach": [
+        {
+          "title": "Move authority outside the model",
+          "body": "Derive identity from verified server context and enforce resource authorization at every data boundary. The model's requested tenant is not trusted authority. Use supported isolation or mandatory filters and ensure every retrieval path applies them."
+        },
+        {
+          "title": "Scope derived artifacts",
+          "body": "Scope response caches to all correctness and access dimensions, including tenant, authorization state, and relevant data version, or avoid caching protected answers. Recheck citation access. Keep logs and traces from becoming a second unprotected data store."
+        },
+        {
+          "title": "Test with conflicting fixtures",
+          "body": "Create two tenants with the same question but different private answers. Test direct access, semantic search, cache hits, revoked access, and malicious tool arguments. Confirm unauthorized records never enter the model context."
+        }
+      ],
+      "tradeoff": "Physical isolation can simplify some boundaries at greater operating cost. Shared storage requires consistently enforced policy across every access path; a prompt instruction cannot substitute for it.",
+      "pitfalls": [
+        "Filtering unauthorized text only after the model has seen it.",
+        "Reusing an answer across users because their questions look similar."
+      ],
+      "followups": [
+        "How do permission changes affect cached answers?",
+        "What if a background ingestion job forgets the tenant field?"
+      ],
+      "rubric": [
+        "Uses trusted identity and enforced authorization.",
+        "Includes caches, citations, and logs in the design.",
+        "Tests cross-tenant non-disclosure before generation."
+      ],
+      "sources": [
+        {
+          "title": "Qdrant: Filtering",
+          "href": "https://qdrant.tech/documentation/search/filtering/"
+        },
+        {
+          "title": "Anthropic: Writing effective tools for agents",
+          "href": "https://www.anthropic.com/engineering/writing-tools-for-agents"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    },
+    {
+      "id": "scenario-silent-quality-regression",
+      "slug": "silent-quality-regression",
+      "topic": "production",
+      "level": "Advanced",
+      "minutes": 10,
+      "title": "Investigate a service that is up but getting worse",
+      "scenario": "The assistant returns HTTP 200 as usual, yet users report worse answers after yesterday's release. Several things changed: the prompt, an ingestion job, and the model alias. How do you investigate and recover?",
+      "clarify": [
+        "Which task slices worsened, and what examples demonstrate the change?",
+        "Which prompt, model, source, index, and tool versions were actually used in those runs?"
+      ],
+      "approach": [
+        {
+          "title": "Establish the impact",
+          "body": "Collect redacted failed cases and compare task outcomes, escalation, latency, and cost with the previous period. Distinguish user-mix changes from a regression on comparable inputs. Preserve the relevant versions and traces."
+        },
+        {
+          "title": "Isolate likely changes",
+          "body": "Replay a representative case set while changing one suspected component at a time where reproducible. Compare extracted documents and retrieved evidence before blaming generation. Use fixed model versions when available and record the limits of replaying a moving alias."
+        },
+        {
+          "title": "Recover with evidence",
+          "body": "Use the known-good configuration if it remains safe and compatible with current data. Validate the recovery on affected tasks and monitor the rollout. Add the failures to a maintained regression set and prevent multiple untracked changes from hiding the next cause."
+        }
+      ],
+      "tradeoff": "Rollback can restore service quickly but may also restore an obsolete policy or incompatible index. Check the whole version combination rather than reversing only the application commit.",
+      "pitfalls": [
+        "Treating HTTP availability as a quality metric.",
+        "Claiming a root cause from timing alone when several components changed."
+      ],
+      "followups": [
+        "What if the old provider model is no longer available?",
+        "How would you change the next release process?"
+      ],
+      "rubric": [
+        "Separates observed impact from causal hypotheses.",
+        "Tracks the full configuration and data version.",
+        "Verifies recovery and adds targeted regression coverage."
+      ],
+      "sources": [
+        {
+          "title": "Google SRE: Canarying releases",
+          "href": "https://sre.google/workbook/canarying-releases/"
+        },
+        {
+          "title": "Anthropic: Demystifying evals for AI agents",
+          "href": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+        }
+      ],
+      "checkedAt": "2026-10-05"
+    }
+  ]
+}
