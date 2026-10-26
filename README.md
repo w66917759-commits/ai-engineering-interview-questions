@@ -4,6 +4,8 @@
 
 Created by **[SaveMyToken](https://savemytoken.com)** — practical guides for AI models, agents, RAG, and token costs.
 
+Related project: **[SI-API](https://siapi.ai)**.
+
 [Browse the questions](#question-bank) · [Structured JSON](data/questions.json) · [Contribute](CONTRIBUTING.md) · [Content license](LICENSE.md)
 
 ## What's included
